@@ -1,0 +1,14 @@
+<if test="id != null and id != ''">and id = #{id}</if>
+				<if test="accountid != null and accountid != ''">and accountid = #{accountid}</if>
+				<if test="status != null and status != ''">and status = #{status}</if>
+				<if test="remark != null and remark != ''">and remark = #{remark}</if>
+				<if test="task_id != null and task_id != ''">and task_id = #{task_id}</if>
+				<if test="open != null and open != ''">and open = #{open}</if>
+				<if test="platformid != null and platformid != ''">and platformid = #{platformid}</if>
+				<if test="accountname != null and accountname != ''">and accountname = #{accountname}</if>
+				<if test="nickname != null and nickname != ''">and nickname = #{nickname}</if>
+				<if test="password != null and password != ''">and password = #{password}</if>
+				<if test="serialport != null and serialport != ''">and serialport = #{serialportd}</if>
+				<if test="regionid != null and regionid != ''">and regionid = #{regionid}</if>
+				<if test="vpsid != null and vpsid != ''">and vpsid = #{vpsid}</if>
+				<if test="deviceid != null and deviceid != ''">and deviceid = #{deviceid}</if>

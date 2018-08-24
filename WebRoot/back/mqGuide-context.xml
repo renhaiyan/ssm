@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:core="http://activemq.apache.org/schema/core" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.7.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+	<!-- localhost  123.182.246.195:61616 failover:tcp://123.182.246.195:61616?wireFormat.maxInactivityDuration=0-->
+	 <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">  
+	    <property name="connectionFactory">  
+	        <bean class="org.apache.activemq.ActiveMQConnectionFactory">  
+	            <property name="brokerURL" value="failover:tcp://123.182.246.195:61616" />  
+    		</bean> 
+	    </property>  
+	    <property name="maxConnections" value="20"></property>  
+	</bean>  
+	<!--使用缓存可以提升效率-->
+    <bean id="cachingConnectionFactory"
+          class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="connectionFactory"/>
+        <property name="sessionCacheSize" value="1"/>
+    </bean>
+<!-- 	AI_GuideBeijingQueue -->
+    <bean id="myGuideQuene" class="org.apache.activemq.command.ActiveMQQueue">  
+        <constructor-arg index="0" value="AI_GuideBeijingQueue" />  
+    </bean>
+    <bean id="GuideQueneConsumer" class="com.longriver.netpro.common.MQResult.GuideUtil" />  
+    <bean id="GuideQueneListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">  
+        <constructor-arg ref="GuideQueneConsumer" />  
+        <property name="defaultListenerMethod" value="onMessage" />  
+        <property name="messageConverter"><null/></property>  
+    </bean>
+    <bean id="guideListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
+        <property name="connectionFactory" ref="connectionFactory" />  
+        <property name="destination" ref="myGuideQuene" />  
+        <property name="messageListener" ref="GuideQueneListener" />  
+    </bean>
+    
+    <!-- 执行结果 -->
+       <bean id="myResultQuene" class="org.apache.activemq.command.ActiveMQQueue">  
+        <constructor-arg index="0" value="AI_myExeResult" />  
+    </bean>
+      <!--  <bean id="myResultQueneConsumer" class="com.longriver.netpro.common.MQResult.GuideUtil" />  
+    <bean id="myResultQueneListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">  
+        <constructor-arg ref="myResultQueneConsumer" />  
+        <property name="defaultListenerMethod" value="onMessage" />  
+        <property name="messageConverter"><null/></property>  
+    </bean>
+    <bean id="myResultQueneListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
+        <property name="connectionFactory" ref="connectionFactory" />  
+        <property name="destination" ref="myResultQuene" />  
+        <property name="messageListener" ref="myResultQueneListener" />  
+    </bean>-->
+    
+  <!--    <bean id="myResultTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg name="connectionFactory" ref="connectionFactory" />
+	</bean>-->
+	  <!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->  
+    <bean id="myResultTemplate" class="org.springframework.jms.core.JmsTemplate">  
+        <property name="connectionFactory" ref="connectionFactory" />  
+        <property name="defaultDestination" ref="myResultQuene" />  
+         <property name="receiveTimeout" value="10000" />  
+        <!-- true是topic，false是queue，默认是false，此处显示写出false -->  
+         <property name="pubSubDomain" value="true" />  
+    </bean>  
+</beans>
+

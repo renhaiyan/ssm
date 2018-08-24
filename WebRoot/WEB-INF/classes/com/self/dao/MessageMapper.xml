@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.self.dao.MessageMapper">
+	<select id="findMessage" resultType="com.self.pojo.Lawyer">
+		select * from lawyer
+	</select>
+	
+	<select id="getAddress" parameterType="com.self.pojo.Page" resultType="com.self.pojo.Address">
+		select id,address,region,num from address limit ${page},${size}
+	</select>
+</mapper>

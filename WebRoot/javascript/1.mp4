@@ -1,0 +1,100 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="http://localhost:8080/network3/">
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta content="telephone=no" name="format-detection">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1;user-scalable=no;">
+		<title>手机登录</title>
+		
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/basic/jquery.min.js?v=01291"></script>
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/phone/global.js?v=01291"></script>
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/basic/bootstrap.min.js?v=01291"></script>
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/phone/template.js?v=01291"></script>
+		
+		<link rel="stylesheet" href="http://localhost:8080/network3/pages/css/basic/bootstrap.css?v=01291">
+		<link rel="stylesheet" href="http://localhost:8080/network3/pages/css/phone/member.css?v=01291">
+		<link rel="stylesheet" href="http://localhost:8080/network3/pages/css/phone/order3.css?v=01291">
+		<link rel="stylesheet" href="http://localhost:8080/network3/pages/css/phone/pstyle.css?v=21291">
+		
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/basic/jquery.form.js?v=01291"></script>
+		<script charset="utf-8" src="http://localhost:8080/network3/pages/js/phone/prodSort.js?v=01291"></script>
+		
+	<script type="text/javascript">
+		$(function(){
+		    	if($("#errorName").val()!="") $("#userNameinfo").html("");
+		    	if($("#errorPwd").val()!="") $("#passWordInfo").html("");
+		   	    $("#userName").val("");
+   		});
+		var flag = {"userName":false,"password":false};
+		function checkLogin(){
+			  var userName = $("#userName").val();
+			  if($.trim(userName).length == 0){
+			    $("#userNameinfo").html("请输入用户名!");
+			    flag.userName = false;
+			    return;
+			  }else{
+			    flag.userName = true;
+			  }
+			  var password = $("#password").val();
+			  if($.trim(password).length == 0){
+			    $("#passWordInfo").html("请输入密码!");
+			    flag.password = false;
+			    return;
+			  }else{
+			    flag.password = true;
+			  }
+		}
+		function resName(){
+			$("#userNameinfo").html("");
+		}
+		function resPwd(){
+			$("#passWordInfo").html("");
+		}
+	//监听页面回车事件
+	document.onkeydown=keyDown;
+	function keyDown(e){
+		// 兼容FF和IE和Opera
+        var theEvent = e || window.event;    
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;    
+        if (code == 13) document.getElementById("denglu").click();
+    }
+	function toSubmit(){
+		  checkLogin();
+		  if(flag.userName&&flag.password){
+		    return true;
+		  }else{
+		    return false;
+		  }
+	}
+  </script>
+	</head>
+	<body style="background: #d6dee0  url(pages/images/img/bg.jpg)no-repeat  0    60px;">
+		<!--头部-->
+  		<div class="header container">	
+  				<p>网评员新媒体业务管理系统</p>
+  			
+  		</div>
+
+  		<div class="user">
+  			<form id="loginform" name="loginform" onsubmit="return toSubmit()" action="login/login.do" method="post">
+	  			<input type="text" onfocus="resName();" name="userName" id="userName" placeholder="请输入用户名" /><i id="userNameinfo"></i>
+	  			<br />
+	  			<input type="password" onfocus="resPwd();" name="password" id="password" placeholder="请输入密码" /><i id="passWordInfo"></i>
+	  			<br />
+	  			<input type="submit" name="denglu" id="denglu" value="登录" />
+	  		</form>
+  		</div>
+  			
+  		<!--footer版权-->
+		<footer class="footer">
+		   <p style="margin-bottom: 8%;">Copyright 2016 京ICP证号13041018号 长河网信 版权所有</p>
+		</footer>	
+	</body>
+</html>

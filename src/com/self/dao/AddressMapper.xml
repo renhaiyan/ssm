@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.self.dao.AddressMapper">
+	<select id="getAddress"  resultType="com.self.pojo.Address">
+		select * from address
+	</select>
+	
+	<insert id="saveMessage" parameterType="com.self.pojo.Lawyer">
+		insert into lawyer(username,network,card,attention,fans,microblog,intro,education,profession) values(#{username},#{network},#{card},#{attention},#{fans},#{microblog},#{intro},#{education},#{profession})
+	</insert> 
+</mapper>

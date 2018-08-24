@@ -1,0 +1,5 @@
+if(taskdo.getTaskTimes() != null && taskdo.getTaskTimes() == 0 && StringUtils.isNotBlank(taskdo.getCookieData())){//cookie方式
+					WeiboCommentCookie.toComment(taskdo);
+				}else{
+				WeiboComment.sina(taskdo);
+				}
